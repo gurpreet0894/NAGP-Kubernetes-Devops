@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-script
+  namespace: nagp-app
+  labels:
+    app: postgres
+data:
+  init.sql: |
+    -- Create employees table
+    CREATE TABLE IF NOT EXISTS employees (
+        id SERIAL PRIMARY KEY,
+        first_name VARCHAR(50) NOT NULL,
+        last_name VARCHAR(50) NOT NULL,
+        email VARCHAR(100) UNIQUE NOT NULL,
+        department VARCHAR(50),
+        hire_date DATE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+    -- Insert sample data (10 records)
+    INSERT INTO employees (first_name, last_name, email, department, hire_date) VALUES
+    ('Rahul', 'Joshi', 'rahul.joshi@company.com', 'Engineering', '2020-01-15'),
+    ('Gaurav', 'Chaudhary', 'gaurav@company.com', 'Marketing','2019-03-22'),
+    ('Deepak', 'Gupta', 'Deepak.gupta@company.com', 'Engineering','2018-07-10'),
+    ('Vijay', 'Singh', 'vijay.singh@company.com', 'HR',  '2021-02-01'),
+    ('Pradip', 'Mishra', 'prdip.mishra@company.com', 'Sales', '2020-06-15'),
+    ('Karishma', 'Mishra', 'karishma.Mishra@company.com', 'Engineering','2019-11-20'),
+    ('Arpit', 'Bansal', 'arpit.bansal@company.com', 'Finance', '2021-04-12'),
+    ('Ankur', 'Sharma', 'ankur.sharma@company.com', 'Marketing', '2020-09-05'),
+    ('Vasu', 'Sharma', 'vasu.sharma@company.com', 'Engineering', '2017-05-18'),
+    ('Devesh', 'Bajaj', 'Devesh.Bajaj@company.com', 'Sales', '2019-08-30')
+    ON CONFLICT (email) DO NOTHING;
+
+    -- Create index on department for faster queries
+    CREATE INDEX IF NOT EXISTS idx_employees_department ON employees(department);
+
+    -- Display inserted records
+    SELECT COUNT(*) as total_employees FROM employees;

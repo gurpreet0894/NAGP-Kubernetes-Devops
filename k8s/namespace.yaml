@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nagp-app
+  labels:
+    name: nagp-app
+    environment: production
+    project: kubernetes-multi-tier

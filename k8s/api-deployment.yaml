@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-api
+  namespace: nagp-app
+  labels:
+    app: service-api
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: service-api
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: service-api
+    spec:
+      containers:
+      - name: service-api
+        image: gurpreet0894/service-api:v1
+        ports:
+        - containerPort: 3000
+          name: http
+        env:
+        - name: PORT
+          value: "3000"
+        - name: NODE_ENV
+          value: "production"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/config
+          readOnly: true
+        - name: secret-volume
+          mountPath: /etc/secrets
+          readOnly: true
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: config-volume
+        configMap:
+          name: db-config
+          items:
+          - key: DB_HOST
+            path: DB_HOST
+          - key: DB_PORT
+            path: DB_PORT
+          - key: DB_NAME
+            path: DB_NAME
+      - name: secret-volume
+        secret:
+          secretName: db-secret
+          items:
+          - key: DB_USER
+            path: DB_USER
+          - key: DB_PASSWORD
+            path: DB_PASSWORD

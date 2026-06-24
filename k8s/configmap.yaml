@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+  namespace: nagp-app
+  labels:
+    app: service-api
+data:
+  DB_HOST: "postgres-0.postgres-service.nagp-app.svc.cluster.local"
+  DB_PORT: "5432"
+  DB_NAME: "employeedb"
