@@ -18,7 +18,7 @@ This project demonstrates a **multi-tier architecture** deployed on **Google Kub
 - Service API URL: `http://34.75.28.244/api/employees`
 
 ### Video Demonstration
-- Screen Recording: `https://nagarro-my.sharepoint.com/:f:/p/gurpreet_singh15/IgA_95uxZFjISqEnpJtmXroUAW5BhpDlm8JUlfBa_J1MFgs?e=fooKh2`
+- Screen Recording: `https://drive.google.com/drive/folders/1WOvE4D_1MT6CzORYqFxAKcEQbXFYCab_?usp=sharing`
 
 ---
 
