@@ -8,4 +8,4 @@ parameters:
   replication-type: none
 volumeBindingMode: WaitForFirstConsumer
 allowVolumeExpansion: true
-reclaimPolicy: Retain  # This is the key change
+reclaimPolicy: Retain
